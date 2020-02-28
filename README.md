@@ -2,9 +2,23 @@
 
 ## Beugró kérdések
 - Ismertesd a JDBC három legfontosabb interfészét, amelyeket egy lekérdezés során használnod kell!
+    - Connection: kapcsolat felépítése
+    - Statement: lekérdezés létrehozása
+    - ResultSet: a kurzorobjektum, ezzel dolgozhatók fel a visszakapott sorok
+
 - Mely két metódussal hajthatsz végre lekérdezéseket? Melyiket mikor használod?
+    - executeQuery(): amikor adatot kérdezek le (SELECT); egy ResultSet típusú objektumot ad vissza, ebből nyerhetők ki a sorok
+    - executeUpdate(): egyéb adatbázis-műveletekhez használható, amelyek nem adnak vissza eredményt (INSERT, UPDATE, DELETE stb.)
+    
 - Miért jobb a PreparedStatement a Statementnél?
+    - Eltárolja a végrehajtási tervet, és ezért a későbbi lefuttatások alkalmával gyorsabban fut le.
+    - Segítségével paramétereket helyettesíthetünk be biztonságosan egy lekérdezésbe, ezzel elkerülhetjük az SQL injection típusú sebezhetőségeket. 
+    
 - Hogyan nyered ki az adatokat a lekérdezés során kapott kurzorból?
+    - A kurzor egy `ResultSet` típusú objektum.
+    - Kezdetben a kurzor az első sor előttre van pozicionálva, nem hivatkozik semmire.
+    - A next() metódussal lehet mindig a következő sorra váltani, ha van. Ezt `boolean` típusú visszatérési értékében jelzi. Az első sor feldolgozásához is meg kell hívni egyszer.
+    - Külöböző get metódusokkal kérjük el az adatokat, attól függően, hogy milyen típusú adatot akarunk elkérni, pl. a getInt() egész számokat kér el. Ezeknek vagy az oszlop sorszámát vagy a nevét kell megadnunk, pl. `rs.getInt(1)` vagy `rs.getInt("id")`.
 
 ## A feladatok
 
