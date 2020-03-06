@@ -38,17 +38,26 @@ többi részét nem szükséges módosítani.
 fogunk. Ügyeljünk rá, hogy a neve legyen egyedi, pl.
 `CREATE DATABASE <neptun>_jdbc;`
 
-2. Hogy a Microsoft SQL Serverrel kommunikálni tudjunk, szükség van a JDBC driverére.
+2. Hozzuk létre a táblát, amellyel dolgozni fogunk:
+
+```
+CREATE TABLE books (
+    id int IDENTITY(1,1) PRIMARY KEY,
+    author nvarchar(255) NOT NULL,
+    title nvarchar(255) NOT NULL,
+    type nvarchar(10) NOT NULL,
+    description text);
+```
+
+3. Hogy a Microsoft SQL Serverrel kommunikálni tudjunk, szükség van a JDBC driverére.
 Nyissuk meg a projekt `pom.xml` konfigurációs fájlját, és vegyük fel függőségként.
 
-3. A `BookDao` osztály konstruktorában nyissunk egy JDBC kapcsolatot az adatbázishoz.
+4. A `BookDao` osztály konstruktorában nyissunk egy JDBC kapcsolatot az adatbázishoz.
 Mivel a program futása során a kapcsolatot végig használni fogjuk, tároljuk tagváltozóban.
 A JDBC URL a következő formátumú:
 `jdbc:sqlserver://localhost;database=hatter`
 
-4. Ha a programot először indítjuk, akkor még nem létezik a tábla, amelyben a könyvek
-adatait tárolni fogjuk. Ezért a `BookDao` konstruktorában hozzuk is létre. Ügyeljünk rá,
-hogy ha a tábla mégis létezik, akkor se kapjunk hibát. (`CREATE TABLE IF NOT EXIST`)
+Módosítsd benne az adatbázis nevét az általad választottra.
 
 5. A `BookDao` osztály `close()` metódusában gondoskodjunk a kapcsolat lezárásáról.
 
@@ -58,7 +67,12 @@ A legelső megvalósítandó művelet a listázás. Módosítsuk úgy a megfelel
 elvégezze a lekérdezést, majd a kapott adatokból készítsen `Book` objektumokat, és listaként
 adja vissza őket. A többi metódus törzsét egyelőre kommentezzük ki.
 
-Most szúrjunk be kézzel adatokat a táblába, és vizsgáljuk meg, hogy működik-e a listázás!
+Most szúrjunk be kézzel adatokat a táblába, és vizsgáljuk meg, hogy működik-e a listázás:
+
+```
+INSERT INTO books (author, title, type, description) VALUES
+('Orwell', '1984', 'PRINTED', 'Az állami kontrollról és az emberek szabadságáról szóló leghíresebb antiutópia.')
+```
 
 ### Új könyv felvitele
 
