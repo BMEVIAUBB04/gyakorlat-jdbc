@@ -15,7 +15,7 @@ public class MainWindow implements Runnable {
 
     private JFrame mainWindow;
     private BookDao bookDao = new BookDao();
-    private BookTableModel tableModel = new BookTableModel();
+    private BookTableModel tableModel = new BookTableModel(bookDao.findAll());
     private JTable table = new JTable(tableModel);
 
     class CatalogActionListener implements ActionListener {
