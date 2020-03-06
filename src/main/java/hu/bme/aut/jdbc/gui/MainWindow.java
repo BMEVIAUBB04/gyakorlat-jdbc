@@ -54,7 +54,7 @@ public class MainWindow implements Runnable {
                     newDialog.setVisible(true);
                     Book newEntry = newDialog.parseForm();
                     bookDao.persist(newEntry);
-                    tableModel.add(newEntry);
+                    tableModel.newCatalog(bookDao.findAll());
                     break;
             }
         }
