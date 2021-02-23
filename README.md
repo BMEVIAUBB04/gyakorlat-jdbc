@@ -2,23 +2,24 @@
 
 ## Beugró kérdések
 - Ismertesd a JDBC három legfontosabb interfészét, amelyeket egy lekérdezés során használnod kell!
-    - Connection: kapcsolat felépítése
-    - Statement: lekérdezés létrehozása
-    - ResultSet: a kurzorobjektum, ezzel dolgozhatók fel a visszakapott sorok
-
 - Mely két metódussal hajthatsz végre lekérdezéseket? Melyiket mikor használod?
-    - executeQuery(): amikor adatot kérdezek le (SELECT); egy ResultSet típusú objektumot ad vissza, ebből nyerhetők ki a sorok
-    - executeUpdate(): egyéb adatbázis-műveletekhez használható, amelyek nem adnak vissza eredményt (INSERT, UPDATE, DELETE stb.)
-    
 - Miért jobb a PreparedStatement a Statementnél?
-    - Eltárolja a végrehajtási tervet, és ezért a későbbi lefuttatások alkalmával gyorsabban fut le.
-    - Segítségével paramétereket helyettesíthetünk be biztonságosan egy lekérdezésbe, ezzel elkerülhetjük az SQL injection típusú sebezhetőségeket. 
-    
 - Hogyan nyered ki az adatokat a lekérdezés során kapott kurzorból?
-    - A kurzor egy `ResultSet` típusú objektum.
-    - Kezdetben a kurzor az első sor előttre van pozicionálva, nem hivatkozik semmire.
-    - A next() metódussal lehet mindig a következő sorra váltani, ha van. Ezt `boolean` típusú visszatérési értékében jelzi. Az első sor feldolgozásához is meg kell hívni egyszer.
-    - Külöböző get metódusokkal kérjük el az adatokat, attól függően, hogy milyen típusú adatot akarunk elkérni, pl. a getInt() egész számokat kér el. Ezeknek vagy az oszlop sorszámát vagy a nevét kell megadnunk, pl. `rs.getInt(1)` vagy `rs.getInt("id")`.
+
+## 2021-ben távoktatási instrukciók
+
+2021 tavasszal, amennyiben a gyakorlat (még/már/továbbra is) távoktatásban kerül terítékre, az alábbit kérjük.
+
+- Otthoni teljesítés esetén nincs beugró. A fenti kérdésekkel ennek ellenére is
+  ellenőrizd a tudásod.
+- Dokumentáld a gyakorlatot és a dokumentációt ("jegyzőkönyvet") add be. A
+  jegyzőkönyvben azt várjuk, hogy bizonyítod a feladatok elvégzését. Minden
+  feladatnál készíts egy képernyőképet a feladat eredményéről. Ne a kódot fényképezd le,
+  hanem keress módot arra, hogy bemutasd, működik a megoldásod. Például, mutasd meg,
+  hogy a kódodat hogyan hívod meg, és utána mi az eredménye - bekerül egy rekord a
+  táblába, vagy hasonló. Minden feladatról elég egyetlen kép, ha az egyben tudja
+  az eredményt mutatni. A gyakorlat akkor minősül teljesítettnek, ha a három önálló
+  feladatból kettőt elvégeztél, és dokumentáltad.
 
 ## A feladatok
 
@@ -34,45 +35,39 @@ többi részét nem szükséges módosítani.
 
 ### Az előkészületek
 
+0. Indítsuk el az SQL Servert lokálisan telepítve vagy pedig Dockerből:
+`docker run -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=Hatteralk2021 -p 1433:1433 mcr.microsoft.com/mssql/server:2017-latest`
+   
+Töltsük le, és indítsuk el az Eclipse fejlesztőkörnyezetet:
+https://www.eclipse.org/downloads/packages/release/2020-12/r/eclipse-ide-java-developers
+
+Importáljuk a repository-ból a vázat.
+
 1. Csatlakozzunk az adatbázishoz, és hozzunk létre egy logikai adatbázist, amelybe dolgozni
 fogunk. Ügyeljünk rá, hogy a neve legyen egyedi, pl.
 `CREATE DATABASE <neptun>_jdbc;`
 
-2. Hozzuk létre a táblát, amellyel dolgozni fogunk:
-
-```
-CREATE TABLE books (
-    id int IDENTITY(1,1) PRIMARY KEY,
-    author nvarchar(255) NOT NULL,
-    title nvarchar(255) NOT NULL,
-    type nvarchar(10) NOT NULL,
-    description text);
-```
-
-3. Hogy a Microsoft SQL Serverrel kommunikálni tudjunk, szükség van a JDBC driverére.
+2. Hogy a Microsoft SQL Serverrel kommunikálni tudjunk, szükség van a JDBC driverére.
 Nyissuk meg a projekt `pom.xml` konfigurációs fájlját, és vegyük fel függőségként.
 
-4. A `BookDao` osztály konstruktorában nyissunk egy JDBC kapcsolatot az adatbázishoz.
+3. A `BookDao` osztály konstruktorában nyissunk egy JDBC kapcsolatot az adatbázishoz.
 Mivel a program futása során a kapcsolatot végig használni fogjuk, tároljuk tagváltozóban.
 A JDBC URL a következő formátumú:
 `jdbc:sqlserver://localhost;database=hatter`
 
-Módosítsd benne az adatbázis nevét az általad választottra.
+4. Ha a programot először indítjuk, akkor még nem létezik a tábla, amelyben a könyvek
+adatait tárolni fogjuk. Ezért a `BookDao` konstruktorában hozzuk is létre. Ügyeljünk rá,
+hogy ha a tábla mégis létezik, akkor se kapjunk hibát. (`CREATE TABLE IF NOT EXIST`)
 
 5. A `BookDao` osztály `close()` metódusában gondoskodjunk a kapcsolat lezárásáról.
 
-### A könyvek listázása
+### A könyvek listázása - közös feladat
 
 A legelső megvalósítandó művelet a listázás. Módosítsuk úgy a megfelelő metódust, hogy
 elvégezze a lekérdezést, majd a kapott adatokból készítsen `Book` objektumokat, és listaként
 adja vissza őket. A többi metódus törzsét egyelőre kommentezzük ki.
 
-Most szúrjunk be kézzel adatokat a táblába, és vizsgáljuk meg, hogy működik-e a listázás:
-
-```
-INSERT INTO books (author, title, type, description) VALUES
-('Orwell', '1984', 'PRINTED', 'Az állami kontrollról és az emberek szabadságáról szóló leghíresebb antiutópia.')
-```
+Most szúrjunk be kézzel adatokat a táblába, és vizsgáljuk meg, hogy működik-e a listázás!
 
 ### Új könyv felvitele
 
