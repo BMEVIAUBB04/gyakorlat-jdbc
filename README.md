@@ -51,6 +51,8 @@ Most szúrjunk be kézzel adatokat a táblába, és vizsgáljuk meg, hogy műkö
 Szeretnénk immár a felület segítségével beszúrni új könyveket. Ehhez írjuk meg a
 `persist()` metódust! Próbáljuk is ki a mentést!
 
+> :warning: **Figyelem**: elvárt a biztonsági szempontból is helyes megoldás, azaz SQL injection sebezhetőség nem elfogadható!
+
 ### Könyv törlése - opcionális
 
 Valósítsuk meg a `delete()` metódust is, hogy törölni tudjunk! Próbáljuk ki a törlést!
@@ -58,3 +60,11 @@ Valósítsuk meg a `delete()` metódust is, hogy törölni tudjunk! Próbáljuk 
 ### Könyv módosítása - opcionális
 
 Valósítsuk meg a `save()` metódust! Próbáljuk ki egy meglévő bejegyzés módosítását!
+
+## Segítség otthoni munkához
+
+A megoldás otthoni folytatásához szükség lesz az SQL Serverre. Ezt Dockerből igen könnyen el lehet indítani, pl. az alábbi módon:
+
+`docker run -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=Hatteralk2021 -p 1433:1433 mcr.microsoft.com/mssql/server:2017-latest`
+
+Figyelni kell viszont arra, hogy ekkor az `sa` felhasználóhoz tartozó jelszó így `Hatteralk2021` lesz, ezt módosítani kell a JDBC URL-ben is. Illetve a futó adatbázisban a sémának ekkor is léteznie kell, így először itt is csatlakozni kell hozzá valamilyen kliensprogrammal, pl. az SQL Management Studioval.
