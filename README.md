@@ -6,21 +6,6 @@
 - Miért jobb a PreparedStatement a Statementnél?
 - Hogyan nyered ki az adatokat a lekérdezés során kapott kurzorból?
 
-## 2021-ben távoktatási instrukciók
-
-2021 tavasszal, amennyiben a gyakorlat (még/már/továbbra is) távoktatásban kerül terítékre, az alábbit kérjük.
-
-- Otthoni teljesítés esetén nincs beugró. A fenti kérdésekkel ennek ellenére is
-  ellenőrizd a tudásod.
-- Dokumentáld a gyakorlatot és a dokumentációt ("jegyzőkönyvet") add be. A
-  jegyzőkönyvben azt várjuk, hogy bizonyítod a feladatok elvégzését. Minden
-  feladatnál készíts egy képernyőképet a feladat eredményéről. Ne a kódot fényképezd le,
-  hanem keress módot arra, hogy bemutasd, működik a megoldásod. Például, mutasd meg,
-  hogy a kódodat hogyan hívod meg, és utána mi az eredménye - bekerül egy rekord a
-  táblába, vagy hasonló. Minden feladatról elég egyetlen kép, ha az egyben tudja
-  az eredményt mutatni. A gyakorlat akkor minősül teljesítettnek, ha a három önálló
-  feladatból kettőt elvégeztél, és dokumentáltad.
-
 ## A feladatok
 
 ### Az alkalmazás megismerése
@@ -35,15 +20,8 @@ többi részét nem szükséges módosítani.
 
 ### Az előkészületek
 
-0. Indítsuk el az SQL Servert lokálisan telepítve vagy pedig Dockerből:
-`docker run -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=Hatteralk2021 -p 1433:1433 mcr.microsoft.com/mssql/server:2017-latest`
-   
-Töltsük le, és indítsuk el az Eclipse fejlesztőkörnyezetet:
-https://www.eclipse.org/downloads/packages/release/2020-12/r/eclipse-ide-java-developers
-
-Importáljuk a repository-ból a vázat.
-
-1. Csatlakozzunk az adatbázishoz, és hozzunk létre egy logikai adatbázist, amelybe dolgozni
+1. Csatlakozzunk az adatbázishoz `localhost` címre, `SQL Server Authentication` módszer `sa` felhasználóval és jelszóval,
+és hozzunk létre egy logikai adatbázist, amelybe dolgozni
 fogunk. Ügyeljünk rá, hogy a neve legyen egyedi, pl.
 `CREATE DATABASE <neptun>_jdbc;`
 
@@ -53,11 +31,10 @@ Nyissuk meg a projekt `pom.xml` konfigurációs fájlját, és vegyük fel függ
 3. A `BookDao` osztály konstruktorában nyissunk egy JDBC kapcsolatot az adatbázishoz.
 Mivel a program futása során a kapcsolatot végig használni fogjuk, tároljuk tagváltozóban.
 A JDBC URL a következő formátumú:
-`jdbc:sqlserver://localhost;database=hatter`
+`jdbc:sqlserver://localhost;database=<neptun>_jdbc;trustServerCertificate=true`
 
 4. Ha a programot először indítjuk, akkor még nem létezik a tábla, amelyben a könyvek
-adatait tárolni fogjuk. Ezért a `BookDao` konstruktorában hozzuk is létre. Ügyeljünk rá,
-hogy ha a tábla mégis létezik, akkor se kapjunk hibát. (`CREATE TABLE IF NOT EXIST`)
+adatait tárolni fogjuk. Ezért a `BookDao` konstruktorában hozzuk is létre.
 
 5. A `BookDao` osztály `close()` metódusában gondoskodjunk a kapcsolat lezárásáról.
 
@@ -69,15 +46,15 @@ adja vissza őket. A többi metódus törzsét egyelőre kommentezzük ki.
 
 Most szúrjunk be kézzel adatokat a táblába, és vizsgáljuk meg, hogy működik-e a listázás!
 
-### Új könyv felvitele
+### Új könyv felvitele - kötelező
 
 Szeretnénk immár a felület segítségével beszúrni új könyveket. Ehhez írjuk meg a
 `persist()` metódust! Próbáljuk is ki a mentést!
 
-### Könyv törlése
+### Könyv törlése - opcionális
 
 Valósítsuk meg a `delete()` metódust is, hogy törölni tudjunk! Próbáljuk ki a törlést!
 
-### Könyv módosítása
+### Könyv módosítása - opcionális
 
 Valósítsuk meg a `save()` metódust! Próbáljuk ki egy meglévő bejegyzés módosítását!
