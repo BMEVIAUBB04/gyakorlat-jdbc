@@ -40,8 +40,6 @@ A legelső megvalósítandó művelet a listázás. Módosítsuk úgy a megfelel
 elvégezze a lekérdezést, majd a kapott adatokból készítsen `Book` objektumokat, és listaként
 adja vissza őket. A többi metódus törzsét egyelőre kommentezzük ki.
 
-Most szúrjunk be kézzel adatokat a táblába, és vizsgáljuk meg, hogy működik-e a listázás!
-
 ### Új könyv felvitele - közös feladat
 
 Szeretnénk immár a felület segítségével beszúrni új könyveket. Ehhez írjuk meg a
